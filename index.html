@@ -112,6 +112,15 @@
         .footer .links a:hover {
             color: #C53030;
         }
+        #message {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
     </style>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
@@ -149,42 +158,26 @@
             <a href="#">Save</a>
         </div>
     </div>
+    <div id="message" style="display: none;"></div>
     <script>
-    // Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyB57Hc4XVUG66g2lS4EvjyUfhivUx4ApPs",
-        authDomain: "airavat-97b61.firebaseapp.com",
-        databaseURL: "https://airavat-97b61-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "airavat-97b61",
-        storageBucket: "airavat-97b61.appspot.com",
-        messagingSenderId: "505168497738",
-        appId: "1:505168497738:web:2fe336c5418b11d63f6ab3",
-        measurementId: "G-4YFB37M4C3"
-    };
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB57Hc4XVUG66g2lS4EvjyUfhivUx4ApPs",
+            authDomain: "airavat-97b61.firebaseapp.com",
+            databaseURL: "https://airavat-97b61-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "airavat-97b61",
+            storageBucket: "airavat-97b61.appspot.com",
+            messagingSenderId: "505168497738",
+            appId: "1:505168497738:web:2fe336c5418b11d63f6ab3",
+            measurementId: "G-4YFB37M4C3"
+        };
 
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const storage = firebase.storage();
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const storage = firebase.storage();
 
-        async function captureImage() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                const video = document.createElement('video');
-                video.srcObject = stream;
-                video.play();
-
-                // Wait for the video to start playing
-                await new Promise((resolve) => {
-                    video.onloadedmetadata = () => {
-                        resolve();
-                    };
-                });
-
-                const canvas = document.createElement('canvas');
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                const context = canvas.getContext('2d');
-
-                // Capture the image
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const imageUrl =
+        function showMessage(message, error = false) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.style.display = 'block';
+            messageDiv.textContent = message;
+            messageDiv.style.backgroundColor = error ?
